@@ -8,6 +8,6 @@ namespace Code.Components
         public float Acceleration;
         public float Speed;
         public float MaxSpeed;
-        public float Position;
+        public float CurrentCurveDistance;
     }
 }

@@ -1,4 +1,5 @@
 using Code;
+using Code.Components;
 using Code.Systems;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -21,11 +22,12 @@ namespace Client {
 #endif
             _systems
                 // register your systems here
+                .Add(new InputHandlingSystem())
                 .Add(new WorldInitializationSystem())
-                //.Add(new AccelerationDecelerationSystem())
-                .Add(new PositionChangingSystem())
+                .Add(new AccelerationDecelerationSystem())
+                .Add(new CurvePositionFollowSystem())
                 // register one-frame components (order is important)
-
+                .OneFrame<DoMovable>()
                 // inject service instances here (order doesn't important)
                 .Inject(_worldConfiguration)
                 .Inject(_playerConfiguration)

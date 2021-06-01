@@ -1,6 +1,7 @@
 ﻿using BansheeGz.BGSpline.Curve;
 using Cinemachine;
 using Code.Components;
+using Lean.Touch;
 using Leopotam.Ecs;
 using UnityEngine;
 
@@ -19,11 +20,20 @@ namespace Code.Systems
             EcsEntity playerEntity = InitializePlayer();
 
             InitializeVirtualCamera(playerEntity);
+
+            InitializeTouchHandler();
+        }
+
+        private void InitializeTouchHandler()
+        {
+            LeanTouch leanTouch = GameObject.Instantiate(_worldConfiguration.LeanTouchPrefab);
+            EcsEntity leanTouchEntity = _world.NewEntity();
+            leanTouchEntity.Get<TouchHandler>().Handler = leanTouch;
         }
 
         private void InitializeVirtualCamera(EcsEntity playerEntity)
         {
-            CinemachineVirtualCamera virtualCamera = GameObject.Instantiate(_worldConfiguration.VirtualCamera);
+            CinemachineVirtualCamera virtualCamera = GameObject.Instantiate(_worldConfiguration.VirtualCameraPrefab);
             EcsEntity virtualCameraEntity = _world.NewEntity();
             ref Movable playerMovable = ref playerEntity.Get<Movable>();
             virtualCamera.Follow = playerMovable.Transform;
@@ -47,15 +57,10 @@ namespace Code.Systems
             ref Movable playerMovable = ref playerEntity.Get<Movable>();
             playerMovable.Transform = player.transform;
             playerMovable.Acceleration = _playerConfiguration.Acceleration;
-            playerMovable.Speed = 1f;
+            playerMovable.Speed = 0f;
             playerMovable.MaxSpeed = _playerConfiguration.MaxSpeed;
-            playerMovable.Position = 0f;
+            playerMovable.CurrentCurveDistance = 0f;
             return playerEntity;
         }
-    }
-
-    public struct CameraComponent
-    {
-        public CinemachineVirtualCamera VirtualCamera;
     }
 }

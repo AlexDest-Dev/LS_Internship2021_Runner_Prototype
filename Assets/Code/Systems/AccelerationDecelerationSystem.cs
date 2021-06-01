@@ -1,6 +1,7 @@
 ﻿using System;
 using Code.Components;
 using Leopotam.Ecs;
+using UnityEngine;
 
 namespace Code.Systems
 {
@@ -20,7 +21,8 @@ namespace Code.Systems
             foreach (var movableIndex in _doDecelerationFilter)
             {
                 ref Movable movableComponent = ref _doDecelerationFilter.Get1(movableIndex);
-                movableComponent.Speed = Math.Max(0f, movableComponent.Speed - movableComponent.Acceleration);
+                float newSpeed = CalculateAcceleratedSpeed(ref movableComponent,true);
+                movableComponent.Speed = Math.Max(0f, newSpeed);
             }
         }
 
@@ -29,10 +31,17 @@ namespace Code.Systems
             foreach (var movableIndex in _doAccelerationFilter)
             {
                 ref Movable movableComponent = ref _doAccelerationFilter.Get2(movableIndex);
-
-                movableComponent.Speed = Math.Min(movableComponent.Speed + movableComponent.Acceleration,
-                    movableComponent.MaxSpeed);
+                float newSpeed = CalculateAcceleratedSpeed(ref movableComponent, false);
+                movableComponent.Speed = Math.Min(newSpeed, movableComponent.MaxSpeed);
             }
+        }
+
+        private static float CalculateAcceleratedSpeed(ref Movable movableComponent, bool isDecelerate)
+        {
+            float acceleration = movableComponent.Acceleration;
+            if (isDecelerate)
+                acceleration = -acceleration;
+            return movableComponent.Speed + acceleration * Time.deltaTime;
         }
     }
 }

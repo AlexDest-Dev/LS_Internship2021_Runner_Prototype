@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Code.Systems
 {
-    public class PositionChangingSystem : IEcsRunSystem
+    public class CurvePositionFollowSystem : IEcsRunSystem
     {
         private EcsFilter<Movable> _movableFilter;
         private EcsFilter<Path> _pathFilter;
@@ -19,12 +19,20 @@ namespace Code.Systems
             {
                 ref Movable movableComponent = ref _movableFilter.Get1(movableIndex);
                 
-                movableComponent.Position += movableComponent.Speed * Time.deltaTime;
+                movableComponent.CurrentCurveDistance += movableComponent.Speed * Time.deltaTime;
                 
                 Vector3 tangentPosition = 
-                    pathCurveMath.CalcTangentByDistance(movableComponent.Position);
+                    pathCurveMath.CalcTangentByDistance(movableComponent.CurrentCurveDistance);
+
+                Vector3 currentPosition = pathCurveMath.CalcPositionByDistance(movableComponent.CurrentCurveDistance);
                 
                 movableComponent.Transform.Translate(tangentPosition * Time.deltaTime * movableComponent.Speed);
+                
+                //TODO: Change checking of ending of path on more efficient
+                if (Vector3.Distance(currentPosition, pathCurve.Points[pathCurve.Points.Length - 1].PositionWorld) < 1f)
+                {
+                    _movableFilter.GetEntity(movableIndex).Del<Movable>();
+                }
             }
         }
     }

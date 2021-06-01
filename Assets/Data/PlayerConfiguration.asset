@@ -15,4 +15,4 @@ MonoBehaviour:
   _playerPrefab: {fileID: 1427176633397920077, guid: 009e9840ef67cc8479b481688856fcf5, type: 3}
   _maxOffset: 2
   _maxSpeed: 10
-  _acceleration: 1
+  _acceleration: 10
