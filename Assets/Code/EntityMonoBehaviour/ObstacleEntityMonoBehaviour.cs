@@ -9,7 +9,13 @@ namespace Code.EntityMonoBehaviour
     {
         private void OnCollisionEnter(Collision other)
         {
-            _ecsEntity.Get<Collided>();
+            DisplacementEntityMonoBehaviour playerDisplacement =
+                other.gameObject.GetComponentInChildren<DisplacementEntityMonoBehaviour>();
+            if (playerDisplacement != null)
+            {
+                Debug.Log("Obstacle collided by player");
+                _ecsEntity.Get<Collided>();
+            }
         }
     }
 }
