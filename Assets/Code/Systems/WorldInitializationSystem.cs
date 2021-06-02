@@ -1,6 +1,7 @@
 ﻿using BansheeGz.BGSpline.Curve;
 using Cinemachine;
 using Code.Components;
+using Code.EntityMonoBehaviour;
 using Lean.Touch;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -22,13 +23,20 @@ namespace Code.Systems
             InitializeVirtualCamera(playerEntity);
 
             InitializeTouchHandler();
+            
+            
         }
 
         private void InitializeTouchHandler()
         {
             LeanTouch leanTouch = GameObject.Instantiate(_worldConfiguration.LeanTouchPrefab);
-            EcsEntity leanTouchEntity = _world.NewEntity();
-            leanTouchEntity.Get<TouchHandler>().Handler = leanTouch;
+            Canvas canvas =
+                GameObject.Instantiate(_worldConfiguration.CanvasPrefab);
+            TouchHandlerEntityMonoBehaviour touchHandler =
+                canvas.GetComponentInChildren<TouchHandlerEntityMonoBehaviour>();
+            EcsEntity touchHandlerEntity = _world.NewEntity();
+            touchHandler.SetEntity(touchHandlerEntity);
+            touchHandlerEntity.Get<TouchHandler>().Handler = touchHandler;
         }
 
         private void InitializeVirtualCamera(EcsEntity playerEntity)
@@ -45,21 +53,35 @@ namespace Code.Systems
 
         private void InitializePath()
         {
-            GameObject path = GameObject.Instantiate(_worldConfiguration.Path.gameObject);
+            BGCurve pathCurve = GameObject.Instantiate(_worldConfiguration.Path);
             EcsEntity pathEntity = _world.NewEntity();
-            pathEntity.Get<Path>().PathCurve = path.GetComponent<BGCurve>();
+            pathEntity.Get<Path>().PathCurve = pathCurve;
+            Collider pathCollider = pathCurve.GetComponentInChildren<Collider>();
+            pathCollider.transform.position = pathCurve.Points[pathCurve.Points.Length - 1].PositionWorld;
+            pathCollider.GetComponent<PathVictoryColliderEntityMonoBehaviour>().SetEntity(pathEntity);
         }
 
         private EcsEntity InitializePlayer()
         {
             GameObject player = GameObject.Instantiate(_playerConfiguration.PlayerPrefab);
             EcsEntity playerEntity = _world.NewEntity();
+            
             ref Movable playerMovable = ref playerEntity.Get<Movable>();
             playerMovable.Transform = player.transform;
             playerMovable.Acceleration = _playerConfiguration.Acceleration;
             playerMovable.Speed = 0f;
             playerMovable.MaxSpeed = _playerConfiguration.MaxSpeed;
             playerMovable.CurrentCurveDistance = 0f;
+
+            DisplacementEntityMonoBehaviour displacement =
+                player.GetComponentInChildren<DisplacementEntityMonoBehaviour>();
+            displacement.SetEntity(playerEntity);
+            
+            ref Displacement playerDisplacement = ref playerEntity.Get<Displacement>();
+            playerDisplacement.MaxOffset = _playerConfiguration.MaxOffset;
+            playerDisplacement.DisplacementTransform = displacement.transform;
+            playerDisplacement.StartPosition = displacement.transform.localPosition;
+            
             return playerEntity;
         }
     }

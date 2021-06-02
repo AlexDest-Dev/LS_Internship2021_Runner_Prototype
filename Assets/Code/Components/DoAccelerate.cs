@@ -1,6 +1,6 @@
 ﻿namespace Code.Components
 {
-    public struct DoMovable
+    public struct DoAccelerate
     {
     }
 }

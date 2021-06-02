@@ -6,16 +6,13 @@ namespace Code.Systems
 {
     public class InputHandlingSystem : IEcsRunSystem
     {
-        private EcsFilter<Movable> _movableFilter;
+        private EcsWorld _world;
+        private EcsFilter<Touch> _touchFilter;
         public void Run()
         {
-            foreach (var movableIndex in _movableFilter)
-            { 
-                EcsEntity entity = _movableFilter.GetEntity(movableIndex);
-                if (LeanTouch.Fingers.Count > 1 && LeanTouch.Fingers[1].Set)
-                {
-                    entity.Get<DoMovable>();
-                }
+            foreach (var touchIndex in _touchFilter)
+            {
+                _touchFilter.Get1(touchIndex).Finger = LeanTouch.Fingers[0];
             }
         }
     }

@@ -3,6 +3,7 @@ using Code.Components;
 using Code.Systems;
 using Leopotam.Ecs;
 using UnityEngine;
+using Touch = Code.Components.Touch;
 
 namespace Client {
     sealed class EcsStartup : MonoBehaviour {
@@ -22,12 +23,16 @@ namespace Client {
 #endif
             _systems
                 // register your systems here
-                .Add(new InputHandlingSystem())
                 .Add(new WorldInitializationSystem())
+                .Add(new InputHandlingSystem())
+                .Add(new DoMovableSystem())
                 .Add(new AccelerationDecelerationSystem())
                 .Add(new CurvePositionFollowSystem())
+                .Add(new DisplacementSystem())
+                .Add(new VictoryCheckingSystem())
                 // register one-frame components (order is important)
-                .OneFrame<DoMovable>()
+                .OneFrame<DoAccelerate>()
+                .OneFrame<Collided>()
                 // inject service instances here (order doesn't important)
                 .Inject(_worldConfiguration)
                 .Inject(_playerConfiguration)

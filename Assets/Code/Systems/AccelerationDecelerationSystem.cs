@@ -7,8 +7,8 @@ namespace Code.Systems
 {
     public class AccelerationDecelerationSystem : IEcsRunSystem
     {
-        private EcsFilter<DoMovable, Movable> _doAccelerationFilter;
-        private EcsFilter<Movable>.Exclude<DoMovable> _doDecelerationFilter;
+        private EcsFilter<DoAccelerate, Movable> _doAccelerationFilter;
+        private EcsFilter<Movable>.Exclude<DoAccelerate> _doDecelerationFilter;
         private PlayerConfiguration playerConfiguration;
         public void Run()
         {

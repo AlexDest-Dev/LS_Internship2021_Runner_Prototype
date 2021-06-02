@@ -24,15 +24,7 @@ namespace Code.Systems
                 Vector3 tangentPosition = 
                     pathCurveMath.CalcTangentByDistance(movableComponent.CurrentCurveDistance);
 
-                Vector3 currentPosition = pathCurveMath.CalcPositionByDistance(movableComponent.CurrentCurveDistance);
-                
-                movableComponent.Transform.Translate(tangentPosition * Time.deltaTime * movableComponent.Speed);
-                
-                //TODO: Change checking of ending of path on more efficient
-                if (Vector3.Distance(currentPosition, pathCurve.Points[pathCurve.Points.Length - 1].PositionWorld) < 1f)
-                {
-                    _movableFilter.GetEntity(movableIndex).Del<Movable>();
-                }
+                movableComponent.Transform.Translate(tangentPosition * movableComponent.Speed * Time.deltaTime);
             }
         }
     }

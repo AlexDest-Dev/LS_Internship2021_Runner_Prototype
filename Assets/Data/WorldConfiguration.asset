@@ -16,3 +16,4 @@ MonoBehaviour:
   virtualMainCameraPrefab: {fileID: 36047045282323747, guid: 64deae3b4d761ee4ab13a906d6e49029, type: 3}
   _cameraFollowOffset: {x: 0, y: 5, z: -10}
   _leanTouchPrefab: {fileID: 5471138430944605842, guid: edd8adfe7571d724ea342022e9e34737, type: 3}
+  _canvasPrefab: {fileID: 8888776568747387926, guid: 7f6c5ff605583b2488870e49d887086e, type: 3}
