@@ -34,6 +34,7 @@ namespace Client {
                 .Add(new DisplacementSystem())
                 .Add(new VictoryCheckingSystem())
                 .Add(new DefeatCheckingSystem())
+                .Add(new CameraAffectingSystem())
                 // register one-frame components (order is important)
                 .OneFrame<DoAccelerate>()
                 .OneFrame<Collided>()

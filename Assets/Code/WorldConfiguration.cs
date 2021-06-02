@@ -17,6 +17,9 @@ namespace Code
         [SerializeField] private Canvas _canvasPrefab;
         [SerializeField] private GameObject _obstaclePrefab;
         [SerializeField] private int _obstaclesAmount;
+        [SerializeField] private int _baseFieldOfView = 60;
+        [SerializeField] private int _minimalFieldOfView = 40;
+        [SerializeField] private float _cameraAmplitudeModifier = 10f;
         
         
         public BGCurve Path => _path;
@@ -26,5 +29,8 @@ namespace Code
         public Canvas CanvasPrefab => _canvasPrefab;
         public GameObject ObstaclePrefab => _obstaclePrefab;
         public int ObstaclesAmount => _obstaclesAmount;
+        public int BaseFieldOfView => _baseFieldOfView;
+        public int MinimalFieldOfView => _minimalFieldOfView;
+        public float CameraAmplitudeModifier => _cameraAmplitudeModifier;
     }
 }

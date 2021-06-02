@@ -13,7 +13,6 @@ namespace Code.EntityMonoBehaviour
                 other.gameObject.GetComponentInChildren<DisplacementEntityMonoBehaviour>();
             if (playerDisplacement != null)
             {
-                Debug.Log("Obstacle collided by player");
                 _ecsEntity.Get<Collided>();
             }
         }
