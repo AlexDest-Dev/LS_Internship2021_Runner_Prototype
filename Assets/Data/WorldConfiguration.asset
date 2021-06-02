@@ -17,3 +17,5 @@ MonoBehaviour:
   _cameraFollowOffset: {x: 0, y: 5, z: -10}
   _leanTouchPrefab: {fileID: 5471138430944605842, guid: edd8adfe7571d724ea342022e9e34737, type: 3}
   _canvasPrefab: {fileID: 8888776568747387926, guid: 7f6c5ff605583b2488870e49d887086e, type: 3}
+  _obstaclePrefab: {fileID: 915181857455214768, guid: cc916c0b551637a43a66f9f89642de90, type: 3}
+  _obstaclesAmount: 4

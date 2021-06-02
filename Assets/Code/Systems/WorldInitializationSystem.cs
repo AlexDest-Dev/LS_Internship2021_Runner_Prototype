@@ -1,4 +1,5 @@
-﻿using BansheeGz.BGSpline.Curve;
+﻿using BansheeGz.BGSpline.Components;
+using BansheeGz.BGSpline.Curve;
 using Cinemachine;
 using Code.Components;
 using Code.EntityMonoBehaviour;
@@ -16,7 +17,7 @@ namespace Code.Systems
         
         public void Init()
         {
-            InitializePath();
+            BGCurve curvePath = InitializePath();
 
             EcsEntity playerEntity = InitializePlayer();
 
@@ -24,7 +25,27 @@ namespace Code.Systems
 
             InitializeTouchHandler();
             
-            
+            CreateObstacles(curvePath);
+        }
+
+        private void CreateObstacles(BGCurve curve)
+        {
+            BGCcMath curveMath = curve.GetComponent<BGCcMath>();
+            float curveDistance = curveMath.GetDistance();
+            for (int i = 0; i < _worldConfiguration.ObstaclesAmount; i++)
+            {
+                GameObject obstacleInstance = GameObject.Instantiate(_worldConfiguration.ObstaclePrefab);
+                EcsEntity obstacleEntity = _world.NewEntity();
+                obstacleInstance.GetComponent<ObstacleEntityMonoBehaviour>().SetEntity(obstacleEntity);
+                obstacleEntity.Get<Obstacle>();
+
+                float randomDistanceOnCurve = Random.Range(0, curveDistance);
+                float randomOffset = Random.Range(0, _playerConfiguration.MaxOffset);
+                Vector3 randomPosition = curveMath.CalcPositionByDistance(randomDistanceOnCurve);
+                randomPosition.x += randomOffset;
+                randomPosition.y += randomOffset;
+                obstacleInstance.transform.position = randomPosition;
+            }
         }
 
         private void InitializeTouchHandler()
@@ -51,7 +72,7 @@ namespace Code.Systems
             virtualCameraEntity.Get<CameraComponent>().VirtualCamera = virtualCamera;
         }
 
-        private void InitializePath()
+        private BGCurve InitializePath()
         {
             BGCurve pathCurve = GameObject.Instantiate(_worldConfiguration.Path);
             EcsEntity pathEntity = _world.NewEntity();
@@ -59,6 +80,8 @@ namespace Code.Systems
             Collider pathCollider = pathCurve.GetComponentInChildren<Collider>();
             pathCollider.transform.position = pathCurve.Points[pathCurve.Points.Length - 1].PositionWorld;
             pathCollider.GetComponent<PathVictoryColliderEntityMonoBehaviour>().SetEntity(pathEntity);
+
+            return pathCurve;
         }
 
         private EcsEntity InitializePlayer()

@@ -11,27 +11,36 @@ namespace Code.Systems
     {
         private EcsFilter<Touch> _touchFilter;
         private EcsFilter<Displacement> _displacementFilter;
+        private EcsFilter<GameStopped> _gameStoppedFilter;
         private PlayerConfiguration _playerConfiguration;
         
         public void Run()
         {
-            LeanFinger finger = _touchFilter.Get1(0).Finger;
-            if (finger != null)
+            if (_gameStoppedFilter.IsEmpty())
             {
-                foreach (var displacementIndex in _displacementFilter)
+                LeanFinger finger = _touchFilter.Get1(0).Finger;
+                if (finger != null)
                 {
-                    ref Displacement displacementComponent = ref _displacementFilter.Get1(displacementIndex);
-                    Transform displacementTransform = displacementComponent.DisplacementTransform;
-                    Vector3 localPosition = displacementTransform.localPosition;
-                    Vector2 newDisplacementPosition =
-                        (Vector2) localPosition + finger.ScaledDelta * Time.deltaTime;
-
-                    CalculatePositionComponentWithRespectToMaxOffset(ref newDisplacementPosition.x, displacementComponent);
-                    CalculatePositionComponentWithRespectToMaxOffset(ref newDisplacementPosition.y, displacementComponent);
-
-                    displacementTransform.localPosition = 
-                        Vector3.Lerp(newDisplacementPosition, localPosition, _playerConfiguration.LerpDisplacementCoefficient);
+                    MakeDisplacement(finger);
                 }
+            }
+        }
+
+        private void MakeDisplacement(LeanFinger finger)
+        {
+            foreach (var displacementIndex in _displacementFilter)
+            {
+                ref Displacement displacementComponent = ref _displacementFilter.Get1(displacementIndex);
+                Transform displacementTransform = displacementComponent.DisplacementTransform;
+                Vector3 localPosition = displacementTransform.localPosition;
+                Vector2 newDisplacementPosition =
+                    (Vector2) localPosition + finger.ScaledDelta * Time.deltaTime;
+
+                CalculatePositionComponentWithRespectToMaxOffset(ref newDisplacementPosition.x, displacementComponent);
+                CalculatePositionComponentWithRespectToMaxOffset(ref newDisplacementPosition.y, displacementComponent);
+
+                displacementTransform.localPosition =
+                    Vector3.Lerp(newDisplacementPosition, localPosition, _playerConfiguration.LerpDisplacementCoefficient);
             }
         }
 

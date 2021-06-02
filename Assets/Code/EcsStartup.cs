@@ -1,12 +1,15 @@
+using BansheeGz.BGSpline.Curve;
 using Code;
 using Code.Components;
+using Code.EntityMonoBehaviour;
 using Code.Systems;
 using Leopotam.Ecs;
 using UnityEngine;
 using Touch = Code.Components.Touch;
 
 namespace Client {
-    sealed class EcsStartup : MonoBehaviour {
+    sealed class EcsStartup : MonoBehaviour
+    {
         EcsWorld _world;
         EcsSystems _systems;
         [SerializeField] private WorldConfiguration _worldConfiguration;
@@ -30,6 +33,7 @@ namespace Client {
                 .Add(new CurvePositionFollowSystem())
                 .Add(new DisplacementSystem())
                 .Add(new VictoryCheckingSystem())
+                .Add(new DefeatCheckingSystem())
                 // register one-frame components (order is important)
                 .OneFrame<DoAccelerate>()
                 .OneFrame<Collided>()

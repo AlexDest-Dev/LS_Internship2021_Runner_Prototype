@@ -1,14 +1,20 @@
-﻿using BansheeGz.BGSpline.Components;
+﻿using System.Numerics;
+using System.Threading;
+using BansheeGz.BGSpline.Components;
 using BansheeGz.BGSpline.Curve;
+using Cinemachine.Utility;
 using Code.Components;
 using Leopotam.Ecs;
 using UnityEngine;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Code.Systems
 {
     public class CurvePositionFollowSystem : IEcsRunSystem
     {
         private EcsFilter<Movable> _movableFilter;
+        private EcsFilter<CameraComponent> _cameraFilter;
         private EcsFilter<Path> _pathFilter;
         
         public void Run()
@@ -21,10 +27,12 @@ namespace Code.Systems
                 
                 movableComponent.CurrentCurveDistance += movableComponent.Speed * Time.deltaTime;
                 
-                Vector3 tangentPosition = 
-                    pathCurveMath.CalcTangentByDistance(movableComponent.CurrentCurveDistance);
+                Vector3 curvePosition = 
+                    pathCurveMath.CalcPositionAndTangentByDistance(movableComponent.CurrentCurveDistance, out Vector3 tangentPosition);
+                
+                movableComponent.Transform.position = curvePosition;
+                movableComponent.Transform.rotation = Quaternion.LookRotation(tangentPosition * Time.deltaTime);
 
-                movableComponent.Transform.Translate(tangentPosition * movableComponent.Speed * Time.deltaTime);
             }
         }
     }

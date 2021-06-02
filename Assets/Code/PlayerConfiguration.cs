@@ -9,7 +9,7 @@ namespace Code
         [SerializeField] private float _maxOffset = 2f;
         [SerializeField] private float _maxSpeed = 10f;
         [SerializeField] private float _acceleration = 1f;
-        [SerializeField] private float _lerpDisplacementCoefficient = 0.5f;
+        [Range(0f,1f)][SerializeField] private float _lerpDisplacementCoefficient = 0.5f;
 
         public GameObject PlayerPrefab => _playerPrefab;
         public float MaxOffset => _maxOffset;
