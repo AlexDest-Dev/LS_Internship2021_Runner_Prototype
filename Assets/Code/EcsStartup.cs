@@ -35,6 +35,8 @@ namespace Client {
                 .Add(new VictoryCheckingSystem())
                 .Add(new DefeatCheckingSystem())
                 .Add(new CameraAffectingSystem())
+                .Add(new FxControllingSystem())
+                .Add(new EntityDestroyingSystem())
                 // register one-frame components (order is important)
                 .OneFrame<DoAccelerate>()
                 .OneFrame<Collided>()

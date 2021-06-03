@@ -1,4 +1,5 @@
-﻿using Code.Components;
+﻿using System.Security.Cryptography;
+using Code.Components;
 using Leopotam.Ecs;
 
 namespace Code.Systems
@@ -8,6 +9,7 @@ namespace Code.Systems
         private EcsWorld _world;
         private EcsFilter<Obstacle, Collided> _collidedObstacle;
         private EcsFilter<GameStopped> _gameStoppedFilter;
+        private EcsFilter<Displacement> _displacementFilter;
         public void Run()
         {
             if (_gameStoppedFilter.IsEmpty() && _collidedObstacle.IsEmpty() == false)
@@ -15,6 +17,7 @@ namespace Code.Systems
                 EcsEntity defeatEntity = _world.NewEntity();
                 defeatEntity.Get<GameStopped>();
                 defeatEntity.Get<Defeat>();
+                _displacementFilter.GetEntity(0).Get<Destroy>();
             }
         }
     }

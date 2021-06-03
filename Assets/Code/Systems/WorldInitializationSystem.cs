@@ -26,6 +26,8 @@ namespace Code.Systems
             InitializeTouchHandler();
             
             CreateObstacles(curvePath);
+
+            _playerConfiguration.WidthScalingFactor = LeanTouch.ScalingFactor * Screen.width;
         }
 
         private void CreateObstacles(BGCurve curve)
@@ -64,11 +66,24 @@ namespace Code.Systems
         {
             CinemachineVirtualCamera virtualCamera = GameObject.Instantiate(_worldConfiguration.VirtualCameraPrefab);
             EcsEntity virtualCameraEntity = _world.NewEntity();
+            
             ref Movable playerMovable = ref playerEntity.Get<Movable>();
-            virtualCamera.Follow = playerMovable.Transform;
-            virtualCamera.LookAt = playerMovable.Transform;
             virtualCamera.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset =
                 _worldConfiguration.CameraFollowOffset;
+            switch (_playerConfiguration.CameraFollowState)
+            {
+                case CameraFollowState.FollowObject:
+                    Transform displacementTransform = playerMovable.Transform
+                        .GetComponentInChildren<DisplacementEntityMonoBehaviour>().transform;
+                    virtualCamera.Follow = displacementTransform;
+                    virtualCamera.LookAt = displacementTransform;
+                    break;
+                case CameraFollowState.FollowWay:
+                    virtualCamera.Follow = playerMovable.Transform;
+                    virtualCamera.LookAt = playerMovable.Transform;
+                    break;
+            }
+            
             virtualCameraEntity.Get<CameraComponent>().VirtualCamera = virtualCamera;
         }
 

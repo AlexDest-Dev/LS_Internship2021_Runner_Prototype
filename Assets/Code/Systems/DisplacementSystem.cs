@@ -32,18 +32,29 @@ namespace Code.Systems
             {
                 ref Displacement displacementComponent = ref _displacementFilter.Get1(displacementIndex);
                 Transform displacementTransform = displacementComponent.DisplacementTransform;
+                
                 Vector3 localPosition = displacementTransform.localPosition;
-                Vector2 newDisplacementPosition =
+                Vector2 newDisplacementPosition = 
                     (Vector2) localPosition + finger.ScaledDelta * Time.deltaTime;
+
+                newDisplacementPosition.x =
+                    CalculateLerpPositionComponent(newDisplacementPosition.x, localPosition.x, finger.ScaledDelta.x);
+                newDisplacementPosition.y =
+                    CalculateLerpPositionComponent(newDisplacementPosition.y, localPosition.y, finger.ScaledDelta.y);
 
                 CalculatePositionComponentWithRespectToMaxOffset(ref newDisplacementPosition.x, displacementComponent);
                 CalculatePositionComponentWithRespectToMaxOffset(ref newDisplacementPosition.y, displacementComponent);
 
-                displacementTransform.localPosition =
-                    Vector3.Lerp(newDisplacementPosition, localPosition, _playerConfiguration.LerpDisplacementCoefficient);
+                displacementTransform.localPosition = newDisplacementPosition;
             }
         }
 
+        private float CalculateLerpPositionComponent(float newPositionComponent, float oldPositionComponent, float scaledDeltaComponent)
+        {
+            float widthScalingFactor = _playerConfiguration.WidthScalingFactor;
+            return Mathf.Lerp(newPositionComponent, oldPositionComponent,
+                Mathf.Abs(scaledDeltaComponent / widthScalingFactor));
+        }
         private void CalculatePositionComponentWithRespectToMaxOffset(ref float positionComponent, Displacement displacement)
         {
             positionComponent = Math.Max(-displacement.MaxOffset, positionComponent);

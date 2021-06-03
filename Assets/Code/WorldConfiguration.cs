@@ -1,4 +1,5 @@
-﻿using BansheeGz.BGSpline.Curve;
+﻿using System;
+using BansheeGz.BGSpline.Curve;
 using Cinemachine;
 using Code.Components;
 using Code.EntityMonoBehaviour;
@@ -11,16 +12,20 @@ namespace Code
     public class WorldConfiguration : ScriptableObject
     {
         [SerializeField] private BGCurve _path;
-        [SerializeField] private CinemachineVirtualCamera virtualMainCameraPrefab;
-        [SerializeField] private Vector3 _cameraFollowOffset = new Vector3(0, 5, -10);
         [SerializeField] private LeanTouch _leanTouchPrefab;
         [SerializeField] private Canvas _canvasPrefab;
+
+        [Header("Obstacle Settings")]
         [SerializeField] private GameObject _obstaclePrefab;
         [SerializeField] private int _obstaclesAmount;
+
+        [Header("Camera Settings")]
+        [SerializeField] private CinemachineVirtualCamera virtualMainCameraPrefab;
+        [SerializeField] private Vector3 _cameraFollowOffset = new Vector3(0, 5, -10);
         [SerializeField] private int _baseFieldOfView = 60;
         [SerializeField] private int _minimalFieldOfView = 40;
         [SerializeField] private float _cameraAmplitudeModifier = 10f;
-        
+        [Min(1)] [SerializeField] private float _fieldOfViewSpeedModifier = 1f;
         
         public BGCurve Path => _path;
         public CinemachineVirtualCamera VirtualCameraPrefab => virtualMainCameraPrefab;
@@ -32,5 +37,6 @@ namespace Code
         public int BaseFieldOfView => _baseFieldOfView;
         public int MinimalFieldOfView => _minimalFieldOfView;
         public float CameraAmplitudeModifier => _cameraAmplitudeModifier;
+        public float FieldOfViewSpeedModifier => _fieldOfViewSpeedModifier;
     }
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229422339206466902}
   - component: {fileID: 36047045282323747}
+  - component: {fileID: -314568173469001798}
   m_Layer: 0
   m_Name: VirtualMainCamera
   m_TagString: Untagged
@@ -67,6 +68,21 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 5272257411144114793}
+--- !u!114 &-314568173469001798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991311434908921206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
 --- !u!1 &6092783895332774001
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,8 +173,8 @@ MonoBehaviour:
   m_ScreenY: 0.5
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0.4
-  m_SoftZoneHeight: 0.3
+  m_SoftZoneWidth: 0.145
+  m_SoftZoneHeight: 0.14
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1

@@ -14,8 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _path: {fileID: 8098532117192819120, guid: 077e76a4af9d35b49ba4c575f2a520be, type: 3}
   virtualMainCameraPrefab: {fileID: 36047045282323747, guid: 64deae3b4d761ee4ab13a906d6e49029, type: 3}
-  _cameraFollowOffset: {x: 0, y: 5, z: -10}
+  _cameraFollowOffset: {x: 0, y: 3, z: -10}
   _leanTouchPrefab: {fileID: 5471138430944605842, guid: edd8adfe7571d724ea342022e9e34737, type: 3}
   _canvasPrefab: {fileID: 8888776568747387926, guid: 7f6c5ff605583b2488870e49d887086e, type: 3}
   _obstaclePrefab: {fileID: 915181857455214768, guid: cc916c0b551637a43a66f9f89642de90, type: 3}
   _obstaclesAmount: 4
+  _baseFieldOfView: 60
+  _minimalFieldOfView: 40
+  _cameraAmplitudeModifier: 15
+  _fieldOfViewSpeedModifier: 1.5

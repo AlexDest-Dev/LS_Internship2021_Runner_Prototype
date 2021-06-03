@@ -9,11 +9,21 @@ namespace Code.Systems
     {
         private EcsFilter<DoAccelerate, Movable> _doAccelerationFilter;
         private EcsFilter<Movable>.Exclude<DoAccelerate> _doDecelerationFilter;
+        private EcsFilter<Movable, Destroy> _movableDestroyedFilter;
         private PlayerConfiguration playerConfiguration;
         public void Run()
         {
+            SetZeroIfDestroyed();
             AccelerateMovable();
             DecelerationMovable();
+        }
+
+        private void SetZeroIfDestroyed()
+        {
+            foreach (var movableIndex in _movableDestroyedFilter)
+            {
+                _movableDestroyedFilter.Get1(movableIndex).Speed = 0;
+            }
         }
 
         private void DecelerationMovable()
