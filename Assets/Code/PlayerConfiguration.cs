@@ -12,7 +12,7 @@ namespace Code
         [SerializeField] private float _maxOffset = 2f;
         [SerializeField] private float _maxSpeed = 10f;
         [SerializeField] private float _acceleration = 1f;
-        [Range(0f,1f)][SerializeField] private float _lerpDisplacementCoefficient = 0.5f;
+        [Range(0f,1f)][SerializeField] private float _lerpRotationCoefficient = 0.5f;
         [SerializeField] private CameraFollowState cameraFollowState;
 
         public float WidthScalingFactor
@@ -24,7 +24,7 @@ namespace Code
         public float MaxOffset => _maxOffset;
         public float MaxSpeed => _maxSpeed;
         public float Acceleration => _acceleration;
-        public float LerpDisplacementCoefficient => _lerpDisplacementCoefficient;
+        public float LerpRotationCoefficient => _lerpRotationCoefficient;
         public CameraFollowState CameraFollowState => cameraFollowState;
     }
 

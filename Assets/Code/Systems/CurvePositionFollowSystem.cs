@@ -16,6 +16,7 @@ namespace Code.Systems
         private EcsFilter<Movable> _movableFilter;
         private EcsFilter<CameraComponent> _cameraFilter;
         private EcsFilter<Path> _pathFilter;
+        private PlayerConfiguration _playerConfiguration;
         
         public void Run()
         {
@@ -29,9 +30,11 @@ namespace Code.Systems
                 
                 Vector3 curvePosition = 
                     pathCurveMath.CalcPositionAndTangentByDistance(movableComponent.CurrentCurveDistance, out Vector3 tangentPosition);
+
+                Quaternion newRotation = Quaternion.LookRotation(tangentPosition * Time.deltaTime);
                 
                 movableComponent.Transform.position = curvePosition;
-                movableComponent.Transform.rotation = Quaternion.LookRotation(tangentPosition * Time.deltaTime);
+                movableComponent.Transform.rotation = Quaternion.Lerp(movableComponent.Transform.rotation, newRotation, _playerConfiguration.LerpRotationCoefficient);
 
             }
         }

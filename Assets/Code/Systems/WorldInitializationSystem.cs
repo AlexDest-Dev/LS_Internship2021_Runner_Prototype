@@ -41,7 +41,10 @@ namespace Code.Systems
                 obstacleInstance.GetComponent<ObstacleEntityMonoBehaviour>().SetEntity(obstacleEntity);
                 obstacleEntity.Get<Obstacle>();
 
-                float randomDistanceOnCurve = Random.Range(0, curveDistance);
+                float randomDistanceOnCurve =
+                    Random.Range(_worldConfiguration.PercentDistanceOfSpawning * curveDistance,
+                        curveDistance * (1 - _worldConfiguration.PercentDistanceOfSpawning));
+                
                 float randomOffset = Random.Range(0, _playerConfiguration.MaxOffset);
                 Vector3 randomPosition = curveMath.CalcPositionByDistance(randomDistanceOnCurve);
                 randomPosition.x += randomOffset;

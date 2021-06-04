@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fdea1e51b30456d8b220830b6d7c98d, type: 3}
   m_Name: PlayerConfiguration
   m_EditorClassIdentifier: 
+  _widthScalingFactor: 2250
   _playerPrefab: {fileID: 1427176633397920077, guid: 009e9840ef67cc8479b481688856fcf5, type: 3}
   _maxOffset: 2
   _maxSpeed: 15
   _acceleration: 3
-  _lerpDisplacementCoefficient: 0.87
+  _lerpRotationCoefficient: 0.5
+  cameraFollowState: 1
